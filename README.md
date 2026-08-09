@@ -22,6 +22,7 @@ This repository is where I'm actively learning and experimenting. Expect frequen
 - **Database:** MySQL
 - **Database Driver:** [go-sql-driver/mysql](https://github.com/go-sql-driver/mysql)
 - **Configuration:** Environment variables via [godotenv](https://github.com/lpernett/godotenv)
+- **Password Hashing:** [bcrypt](https://pkg.go.dev/golang.org/x/crypto/bcrypt) (from `golang.org/x/crypto`)
 - **Containerization:** Docker & Docker Compose (for MySQL)
 - **Build Tool:** Makefile
 
@@ -32,16 +33,19 @@ This repository is where I'm actively learning and experimenting. Expect frequen
 ```
 .
 ├── cmd/
-│   ├── api/          # HTTP server setup and routing
-│   └── main.go       # Application entry point
-├── config/           # Environment configuration
-├── db/               # Database connection setup
-├── service/          # Business logic organized by domain
-│   └── user/         # User service (login, register)
-├── bin/              # Compiled binary output
-├── compose.yaml      # Docker Compose for local MySQL
-├── Makefile          # Common build and run commands
-└── README.md         # You are here
+│   ├── api/              # HTTP server setup and routing
+│   └── main.go           # Application entry point
+├── config/               # Environment configuration
+├── db/                   # Database connection setup
+├── service/              # Business logic organized by domain
+│   ├── auth/             # Password hashing utilities
+│   └── user/             # User service (login, register, store, tests)
+├── types/                # Shared domain types and interfaces
+├── utils/                # HTTP request/response helpers
+├── bin/                  # Compiled binary output
+├── compose.yaml          # Docker Compose for local MySQL
+├── Makefile              # Common build and run commands
+└── README.md             # You are here
 ```
 
 ---
@@ -55,12 +59,16 @@ The project is in its very early stages. Here's what exists so far:
 | Project setup and HTTP server | Done |
 | Environment configuration | Done |
 | MySQL connection via Docker Compose | Done |
-| User endpoints scaffolding (`/login`, `/register`) | In Progress |
-| User authentication logic | Planned |
+| Shared types, utils, and repository interfaces | Done |
+| User registration handler with bcrypt password hashing | Done |
+| User store/repository scaffolding | Done |
+| Unit tests for user handlers | Done |
+| User login endpoint | In Progress |
+| JWT-based authentication | Planned |
 | Product catalog | Planned |
 | Shopping cart | Planned |
 | Orders & payments | Planned |
-| Tests & documentation | Planned |
+| Integration tests & API documentation | Planned |
 
 ---
 
@@ -133,7 +141,7 @@ Base URL: `http://localhost:8080/api/v1`
 | Method | Endpoint | Description | Status |
 |--------|----------|-------------|--------|
 | `POST` | `/api/v1/login` | User login | In Progress |
-| `POST` | `/api/v1/register` | User registration | In Progress |
+| `POST` | `/api/v1/register` | User registration (validates payload, checks existing email, hashes password) | Partially Done |
 
 > More endpoints will be added as the project grows.
 
@@ -152,13 +160,15 @@ make test
 - [x] Bootstrap Go project
 - [x] Set up HTTP server and routing
 - [x] Connect to MySQL with Docker Compose
-- [ ] Implement user registration and login
-- [ ] Add JWT-based authentication
+- [x] Add shared types, utils, and repository interfaces
+- [x] Implement user registration handler with password hashing
+- [x] Add unit tests for user handlers
+- [ ] Implement user login and JWT authentication
+- [ ] Persist new users in the database (`CreateUser`)
 - [ ] Build product catalog service
 - [ ] Implement shopping cart
 - [ ] Create order management
-- [ ] Add tests (unit & integration)
-- [ ] Add API documentation
+- [ ] Add integration tests and API documentation
 - [ ] Deploy to a cloud provider
 
 ---
