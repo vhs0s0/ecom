@@ -23,6 +23,7 @@ This repository is where I'm actively learning and experimenting. Expect frequen
 - **Database Driver:** [go-sql-driver/mysql](https://github.com/go-sql-driver/mysql)
 - **Configuration:** Environment variables via [godotenv](https://github.com/lpernett/godotenv)
 - **Password Hashing:** [bcrypt](https://pkg.go.dev/golang.org/x/crypto/bcrypt) (from `golang.org/x/crypto`)
+- **Payload Validation:** [go-playground/validator](https://github.com/go-playground/validator)
 - **Containerization:** Docker & Docker Compose (for MySQL)
 - **Build Tool:** Makefile
 
@@ -60,9 +61,10 @@ The project is in its very early stages. Here's what exists so far:
 | Environment configuration | Done |
 | MySQL connection via Docker Compose | Done |
 | Shared types, utils, and repository interfaces | Done |
+| Payload validation with `go-playground/validator` | Done |
 | User registration handler with bcrypt password hashing | Done |
 | User store/repository scaffolding | Done |
-| Unit tests for user handlers | Done |
+| Unit tests for user handlers (valid and invalid payloads) | Done |
 | User login endpoint | In Progress |
 | JWT-based authentication | Planned |
 | Product catalog | Planned |
@@ -141,9 +143,11 @@ Base URL: `http://localhost:8080/api/v1`
 | Method | Endpoint | Description | Status |
 |--------|----------|-------------|--------|
 | `POST` | `/api/v1/login` | User login | In Progress |
-| `POST` | `/api/v1/register` | User registration (validates payload, checks existing email, hashes password) | Partially Done |
+| `POST` | `/api/v1/register` | User registration (validates payload, checks existing email, hashes password) | Done* |
 
 > More endpoints will be added as the project grows.
+>
+> *`Done*` means the endpoint logic, validation, and password hashing are implemented. Database persistence via `CreateUser` is still being finished.
 
 ---
 
@@ -161,8 +165,9 @@ make test
 - [x] Set up HTTP server and routing
 - [x] Connect to MySQL with Docker Compose
 - [x] Add shared types, utils, and repository interfaces
+- [x] Add payload validation with `go-playground/validator`
 - [x] Implement user registration handler with password hashing
-- [x] Add unit tests for user handlers
+- [x] Add unit tests for user handlers (valid and invalid payloads)
 - [ ] Implement user login and JWT authentication
 - [ ] Persist new users in the database (`CreateUser`)
 - [ ] Build product catalog service
