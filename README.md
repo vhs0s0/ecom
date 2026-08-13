@@ -24,6 +24,7 @@ This repository is where I'm actively learning and experimenting. Expect frequen
 - **Configuration:** Environment variables via [godotenv](https://github.com/lpernett/godotenv)
 - **Password Hashing:** [bcrypt](https://pkg.go.dev/golang.org/x/crypto/bcrypt) (from `golang.org/x/crypto`)
 - **Payload Validation:** [go-playground/validator](https://github.com/go-playground/validator)
+- **Database Migrations:** [golang-migrate](https://github.com/golang-migrate/migrate)
 - **Containerization:** Docker & Docker Compose (for MySQL)
 - **Build Tool:** Makefile
 
@@ -35,6 +36,7 @@ This repository is where I'm actively learning and experimenting. Expect frequen
 .
 ├── cmd/
 │   ├── api/              # HTTP server setup and routing
+│   ├── migrate/          # Migration runner and SQL migration files
 │   └── main.go           # Application entry point
 ├── config/               # Environment configuration
 ├── db/                   # Database connection setup
@@ -60,6 +62,7 @@ The project is in its very early stages. Here's what exists so far:
 | Project setup and HTTP server | Done |
 | Environment configuration | Done |
 | MySQL connection via Docker Compose | Done |
+| Database migrations (users, products, orders, order_items) | Done |
 | Shared types, utils, and repository interfaces | Done |
 | Payload validation with `go-playground/validator` | Done |
 | User registration handler with bcrypt password hashing | Done |
@@ -80,6 +83,7 @@ The project is in its very early stages. Here's what exists so far:
 
 - [Go 1.25+](https://go.dev/dl/)
 - [Docker](https://www.docker.com/) & Docker Compose
+- [golang-migrate CLI](https://github.com/golang-migrate/migrate) (only needed to create new migration files)
 - Make (optional, for convenience commands)
 
 ### 1. Clone the repository
@@ -118,7 +122,15 @@ docker compose up -d
 
 This will start a MySQL container on port `3306`.
 
-### 4. Run the application
+### 4. Run database migrations
+
+```bash
+make migrate-up
+```
+
+This creates the `users`, `products`, `orders`, and `order_items` tables. To roll everything back, use `make migrate-down`.
+
+### 5. Run the application
 
 Using Make:
 
@@ -164,6 +176,7 @@ make test
 - [x] Bootstrap Go project
 - [x] Set up HTTP server and routing
 - [x] Connect to MySQL with Docker Compose
+- [x] Add database migrations (users, products, orders, order_items)
 - [x] Add shared types, utils, and repository interfaces
 - [x] Add payload validation with `go-playground/validator`
 - [x] Implement user registration handler with password hashing
